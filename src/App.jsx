@@ -93,12 +93,14 @@ function formatItemType(type) {
 function App() {
   const [activeTag, setActiveTag] = useState('All references');
   const [search, setSearch] = useState('');
+  const [tagSearch, setTagSearch] = useState('');
   const taggedItems = useMemo(() => corpus.map((item) => ({ ...item, explorerTags: getTags(item) })), []);
   const tagCounts = useMemo(() => {
     const counts = new Map();
     taggedItems.forEach((item) => item.explorerTags.forEach((tag) => counts.set(tag, (counts.get(tag) ?? 0) + 1)));
     return [...counts.entries()].sort((first, second) => first[0].localeCompare(second[0]));
   }, [taggedItems]);
+  const filteredTagCounts = tagCounts.filter(([tag]) => tag.toLocaleLowerCase().includes(tagSearch.trim().toLocaleLowerCase()));
   const visibleItems = useMemo(() => {
     const query = search.trim().toLocaleLowerCase();
     return taggedItems.filter((item) => {
@@ -143,13 +145,19 @@ function App() {
           <button className={`tag-option ${activeTag === 'All references' ? 'is-active' : ''}`} onClick={() => selectTag('All references')}>
             <span className="tag-name">All references</span><span className="tag-count">{corpus.length}</span>
           </button>
+          <label className="topic-search">
+            <span aria-hidden="true">⌕</span>
+            <input value={tagSearch} onChange={(event) => setTagSearch(event.target.value)} placeholder="Filter topics" aria-label="Filter topics" />
+            {tagSearch && <button type="button" onClick={() => setTagSearch('')} aria-label="Clear topic filter">×</button>}
+          </label>
           <div className="tag-list">
-            {tagCounts.map(([tag, count], index) => (
+            {filteredTagCounts.map(([tag, count], index) => (
               <button key={tag} className={`tag-option ${activeTag === tag ? 'is-active' : ''}`} onClick={() => selectTag(tag)}>
                 <span className="tag-index">{String(index + 1).padStart(2, '0')}</span>
                 <span className="tag-name">{tag}</span><span className="tag-count">{count}</span>
               </button>
             ))}
+            {filteredTagCounts.length === 0 && <span className="topic-empty">No matching topics</span>}
           </div>
           <p className="tag-note">Source tags are used when available. Untagged items receive suggested topics.</p>
         </aside>
