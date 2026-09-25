@@ -94,24 +94,33 @@ function App() {
   const [activeTag, setActiveTag] = useState('All references');
   const [search, setSearch] = useState('');
   const [tagSearch, setTagSearch] = useState('');
+  const [typeFilter, setTypeFilter] = useState('All item types');
   const taggedItems = useMemo(() => corpus.map((item) => ({ ...item, explorerTags: getTags(item) })), []);
   const tagCounts = useMemo(() => {
     const counts = new Map();
     taggedItems.forEach((item) => item.explorerTags.forEach((tag) => counts.set(tag, (counts.get(tag) ?? 0) + 1)));
     return [...counts.entries()].sort((first, second) => first[0].localeCompare(second[0]));
   }, [taggedItems]);
+  const itemTypes = useMemo(() => {
+    const counts = new Map();
+    taggedItems.forEach((item) => {
+      if (item.type) counts.set(item.type, (counts.get(item.type) ?? 0) + 1);
+    });
+    return [...counts.entries()].sort((first, second) => formatItemType(first[0]).localeCompare(formatItemType(second[0])));
+  }, [taggedItems]);
   const filteredTagCounts = tagCounts.filter(([tag]) => tag.toLocaleLowerCase().includes(tagSearch.trim().toLocaleLowerCase()));
   const visibleItems = useMemo(() => {
     const query = search.trim().toLocaleLowerCase();
     return taggedItems.filter((item) => {
       const matchesTag = activeTag === 'All references' || item.explorerTags.includes(activeTag);
+      const matchesType = typeFilter === 'All item types' || item.type === typeFilter;
       const haystack = [item.title, item.abstract, item['container-title'], getAuthors(item), ...item.explorerTags]
         .filter(Boolean)
         .join(' ')
         .toLocaleLowerCase();
-      return matchesTag && (!query || haystack.includes(query));
+      return matchesTag && matchesType && (!query || haystack.includes(query));
     });
-  }, [activeTag, search, taggedItems]);
+  }, [activeTag, search, taggedItems, typeFilter]);
   const [selectedId, setSelectedId] = useState(taggedItems[0]?.id);
   const selectedItem = visibleItems.find((item) => item.id === selectedId) ?? visibleItems[0];
 
@@ -173,6 +182,19 @@ function App() {
               <input value={search} onChange={(event) => setSearch(event.target.value)} placeholder="Search references" aria-label="Search references" />
               {search && <button className="clear-search" onClick={() => setSearch('')} aria-label="Clear search">×</button>}
             </label>
+          </div>
+          <div className="item-type-filter">
+            <span>ITEM TYPE</span>
+            <div className="item-type-options" role="group" aria-label="Filter by item type">
+              <button type="button" className={typeFilter === 'All item types' ? 'is-active' : ''} aria-pressed={typeFilter === 'All item types'} onClick={() => setTypeFilter('All item types')}>
+                All types<span>{taggedItems.length}</span>
+              </button>
+              {itemTypes.map(([type, count]) => (
+                <button key={type} type="button" className={typeFilter === type ? 'is-active' : ''} aria-pressed={typeFilter === type} onClick={() => setTypeFilter(type)}>
+                  {formatItemType(type)}<span>{count}</span>
+                </button>
+              ))}
+            </div>
           </div>
           <div className="result-count">SHOWING <strong>{visibleItems.length}</strong> OF {corpus.length} REFERENCES</div>
           <div className="reference-list">
