@@ -72,7 +72,8 @@ button { color: inherit; }
 .reference-row:hover .row-arrow, .reference-row.is-selected .row-arrow { opacity: 1; }
 .detail-panel { min-width: 0; padding: 26px 0 20px 25px; display: flex; flex-direction: column; animation: arrive .5s .08s ease-out both; }
 .detail-topline { display: flex; justify-content: space-between; color: #92948b; font-size: 9px; }
-.detail-type { color: var(--green); font: 10px var(--mono); text-transform: uppercase; margin-top: 36px; }
+.detail-type-field { margin-top: 36px; }
+.detail-type { color: var(--green); font: 500 11px var(--mono); margin-top: 5px; }
 .detail-panel h2 { font: 600 21px/1.32 'Manrope', sans-serif; letter-spacing: 0; margin: 9px 0 12px; }
 .detail-authors { color: #777a72; font-size: 11px; line-height: 1.55; }
 .detail-rule { height: 1px; background: var(--line); margin: 24px 0 18px; }
@@ -110,7 +111,7 @@ button { color: inherit; }
   .workspace { grid-template-columns: 175px minmax(0, 1fr); }
   .results-panel { border-right: 0; }
   .detail-panel { grid-column: 2; border-top: 1px solid var(--line); padding: 22px 0 22px 21px; }
-  .detail-type { margin-top: 24px; }
+  .detail-type-field { margin-top: 24px; }
   .detail-abstract { max-width: 600px; }
   .detail-footer { margin-top: 26px; }
 }
@@ -137,6 +138,6 @@ button { color: inherit; }
   .result-count { margin-top: 19px; }
   .reference-row { grid-template-columns: 25px 1fr 14px; }
   .detail-panel { grid-column: auto; padding: 20px 0; }
-  .detail-type { margin-top: 23px; }
+  .detail-type-field { margin-top: 23px; }
   .page-footer { font-size: 7px; gap: 8px; }
 }

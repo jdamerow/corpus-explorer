@@ -83,6 +83,13 @@ function getYear(item) {
   return item.issued?.['date-parts']?.[0]?.[0] ?? 'Year unknown';
 }
 
+function formatItemType(type) {
+  return String(type || 'Reference')
+    .replace(/([a-z0-9])([A-Z])/g, '$1 $2')
+    .replace(/[-_]+/g, ' ')
+    .replace(/\b\w/g, (letter) => letter.toUpperCase());
+}
+
 function App() {
   const [activeTag, setActiveTag] = useState('All references');
   const [search, setSearch] = useState('');
@@ -179,9 +186,11 @@ function App() {
         <aside className="detail-panel" aria-label="Selected reference">
           {selectedItem ? (
             <>
-              <div className="detail-topline"><span>REFERENCE NOTE</span><span>{getYear(selectedItem)}</span></div>
-              <div className="detail-type">{selectedItem.type?.replaceAll('-', ' ') ?? 'Reference'}</div>
-              <h2>{selectedItem.title ?? 'Untitled reference'}</h2>
+              <div className="detail-topline"><span>REFERENCE DETAILS</span></div>
+              <div className="detail-type-field">
+                <div className="detail-type">{formatItemType(selectedItem.type)}</div>
+              </div>
+              <h2>{selectedItem.title ?? 'Untitled reference'} ({getYear(selectedItem)})</h2>
               <div className="detail-authors">{getAuthors(selectedItem)}</div>
               <div className="detail-rule" />
               <div className="detail-label">ABSTRACT</div>
