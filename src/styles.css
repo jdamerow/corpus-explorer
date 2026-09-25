@@ -79,7 +79,7 @@ button { color: inherit; }
 .row-tags span { color: #823d50; background: #f5e8eb; padding: 3px 6px; font: 9px var(--mono); }
 .row-arrow { color: #9a9c92; opacity: 0; font-size: 13px; transition: opacity .18s; }
 .reference-row:hover .row-arrow, .reference-row.is-selected .row-arrow { opacity: 1; }
-.detail-panel { min-width: 0; padding: 26px 0 20px 25px; display: flex; flex-direction: column; animation: arrive .5s .08s ease-out both; }
+.detail-panel { min-width: 0; padding: 26px 14px 20px 25px; display: flex; flex-direction: column; animation: arrive .5s .08s ease-out both; }
 .detail-topline { display: flex; justify-content: space-between; color: #92948b; font-size: 9px; }
 .detail-type-field { margin-top: 36px; }
 .detail-type { color: var(--accent); font: 500 11px var(--mono); margin-top: 5px; }
@@ -112,7 +112,7 @@ a.detail-metadata-value:hover { text-decoration: underline; }
   .app-shell { padding: 0 3.5vw; }
   .workspace { grid-template-columns: 190px minmax(320px, 1fr) minmax(235px, 275px); }
   .results-panel { padding-left: 21px; padding-right: 21px; }
-  .detail-panel { padding-left: 20px; }
+  .detail-panel { padding-left: 20px; padding-right: 12px; }
 }
 
 @media (max-width: 800px) {
@@ -120,7 +120,7 @@ a.detail-metadata-value:hover { text-decoration: underline; }
   .intro h1 { font-size: 43px; }
   .workspace { grid-template-columns: 175px minmax(0, 1fr); }
   .results-panel { border-right: 0; }
-  .detail-panel { grid-column: 2; border-top: 1px solid var(--line); padding: 22px 0 22px 21px; }
+  .detail-panel { grid-column: 2; border-top: 1px solid var(--line); padding: 22px 12px 22px 21px; }
   .detail-type-field { margin-top: 24px; }
   .detail-abstract { max-width: 600px; }
   .detail-metadata { margin-bottom: 22px; }
@@ -148,7 +148,7 @@ a.detail-metadata-value:hover { text-decoration: underline; }
   .search-box { width: 100%; }
   .result-count { margin-top: 19px; }
   .reference-row { grid-template-columns: 25px 1fr 14px; }
-  .detail-panel { grid-column: auto; padding: 20px 0; }
+  .detail-panel { grid-column: auto; padding: 20px 8px; }
   .detail-type-field { margin-top: 23px; }
   .page-footer { font-size: 7px; gap: 8px; }
 }
