@@ -25,7 +25,7 @@ button { color: inherit; }
 .wordmark { display: inline-flex; align-items: center; gap: 10px; text-decoration: none; color: var(--ink); font: 700 11px var(--mono); letter-spacing: .06em; }
 .wordmark small { display: block; margin-top: 3px; color: var(--muted); font: 400 8px var(--mono); letter-spacing: .14em; }
 .wordmark-mark { display: grid; place-items: center; width: 31px; height: 31px; border-radius: 50%; color: #f5f3eb; background: var(--green); font: 700 15px 'Manrope', sans-serif; }
-.topbar-meta, .intro-kicker, .section-eyebrow, .rail-heading, .result-count, .detail-topline, .detail-label, .detail-footer, .page-footer { font: 10px var(--mono); letter-spacing: .09em; }
+.topbar-meta, .intro-kicker, .section-eyebrow, .rail-heading, .result-count, .detail-topline, .detail-label, .page-footer { font: 10px var(--mono); letter-spacing: .09em; }
 .topbar-meta { color: #65685f; display: flex; align-items: center; gap: 9px; }
 .status-dot { width: 6px; height: 6px; background: #659c70; border-radius: 50%; box-shadow: 0 0 0 3px rgba(101, 156, 112, .12); }
 .meta-divider { color: #b0b1a9; }
@@ -34,7 +34,7 @@ button { color: inherit; }
 .intro h1 { margin: 14px 0 8px; font: 600 52px/1.08 'Manrope', sans-serif; letter-spacing: 0; }
 .intro p { margin: 0; color: #6e7169; font-size: 15px; }
 .workspace { min-height: 550px; display: grid; grid-template-columns: 220px minmax(380px, 1fr) minmax(265px, 310px); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); background: rgba(251, 250, 246, .54); }
-.tag-rail { padding: 25px 20px 24px 0; border-right: 1px solid var(--line); display: flex; flex-direction: column; }
+.tag-rail { padding: 25px 20px 24px 8px; border-right: 1px solid var(--line); display: flex; flex-direction: column; }
 .rail-heading { color: #797c73; display: flex; justify-content: space-between; margin: 0 0 17px; }
 .rail-count { color: #aaa99f; }
 .tag-option { border: 0; background: transparent; text-align: left; display: flex; align-items: center; min-height: 37px; padding: 0 9px; cursor: pointer; width: 100%; color: #666960; transition: color .16s, background .16s; }
@@ -85,10 +85,11 @@ button { color: inherit; }
 .detail-tags button:hover { background: #e1e9dd; }
 .detail-tags button span { margin-left: 8px; color: #819380; }
 .no-topics { color: #92948b; font-size: 11px; }
-.detail-footer { margin-top: auto; padding-top: 22px; display: flex; gap: 12px; justify-content: space-between; align-items: end; color: #96988f; font-size: 8px; line-height: 1.5; }
-.detail-footer > span { overflow-wrap: anywhere; }
-.detail-footer a { flex: 0 0 auto; color: var(--green); text-decoration: none; }
-.detail-footer a span { font-size: 12px; padding-left: 3px; }
+.detail-metadata { margin: 0 0 22px; display: grid; gap: 13px; }
+.detail-metadata-row { display: grid; gap: 5px; }
+.detail-metadata-value { color: #62665c; font: 10px/1.5 var(--mono); overflow-wrap: anywhere; }
+a.detail-metadata-value { color: var(--green); text-decoration: none; }
+a.detail-metadata-value:hover { text-decoration: underline; }
 .detail-empty { margin: auto; color: #888a81; }
 .detail-empty span { font: 9px var(--mono); }
 .detail-empty p { font-size: 13px; }
@@ -113,7 +114,7 @@ button { color: inherit; }
   .detail-panel { grid-column: 2; border-top: 1px solid var(--line); padding: 22px 0 22px 21px; }
   .detail-type-field { margin-top: 24px; }
   .detail-abstract { max-width: 600px; }
-  .detail-footer { margin-top: 26px; }
+  .detail-metadata { margin-bottom: 22px; }
 }
 
 @media (max-width: 560px) {
@@ -124,7 +125,7 @@ button { color: inherit; }
   .intro h1 { font-size: 37px; }
   .intro p { font-size: 13px; line-height: 1.55; }
   .workspace { grid-template-columns: 1fr; }
-  .tag-rail { padding: 19px 0 13px; border-right: 0; border-bottom: 1px solid var(--line); }
+  .tag-rail { padding: 19px 0 13px 8px; border-right: 0; border-bottom: 1px solid var(--line); }
   .rail-heading { margin-bottom: 10px; }
   .tag-list { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 5px; margin: 5px 0 0; }
   .tag-option { flex: 0 0 auto; width: auto; min-height: 33px; padding: 0 9px; border: 1px solid var(--line); }

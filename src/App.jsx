@@ -193,15 +193,25 @@ function App() {
               <h2>{selectedItem.title ?? 'Untitled reference'} ({getYear(selectedItem)})</h2>
               <div className="detail-authors">{getAuthors(selectedItem)}</div>
               <div className="detail-rule" />
+              <div className="detail-metadata">
+                <div className="detail-metadata-row">
+                  <div className="detail-label">DOI</div>
+                  {selectedItem.DOI ? (
+                    <a className="detail-metadata-value" href={`https://doi.org/${selectedItem.DOI}`} target="_blank" rel="noreferrer">{selectedItem.DOI}</a>
+                  ) : <span className="detail-metadata-value">Not provided</span>}
+                </div>
+                <div className="detail-metadata-row">
+                  <div className="detail-label">URL</div>
+                  {selectedItem.URL ? (
+                    <a className="detail-metadata-value" href={selectedItem.URL} target="_blank" rel="noreferrer">{selectedItem.URL}</a>
+                  ) : <span className="detail-metadata-value">Not provided</span>}
+                </div>
+              </div>
               <div className="detail-label">ABSTRACT</div>
               <p className="detail-abstract">{selectedItem.abstract || 'No abstract is available for this reference.'}</p>
               <div className="detail-label detail-topics-label">TOPICS</div>
               <div className="detail-tags">
                 {selectedItem.explorerTags.length ? selectedItem.explorerTags.map((tag) => <button key={tag} onClick={() => selectTag(tag)}>{tag}<span>↗</span></button>) : <span className="no-topics">No suggested topics</span>}
-              </div>
-              <div className="detail-footer">
-                <span>{selectedItem.DOI ? `DOI ${selectedItem.DOI}` : selectedItem['container-title'] ?? 'Source details'}</span>
-                {selectedItem.URL && <a href={selectedItem.URL} target="_blank" rel="noreferrer">OPEN SOURCE <span>↗</span></a>}
               </div>
             </>
           ) : (
