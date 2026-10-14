@@ -18,3 +18,7 @@ The app reads `corpus.csv` as a Zotero CSV export. It maps the key, item type, t
 Manual and automatic Zotero tags are combined and deduplicated. When an item has no exported tags, the app suggests topics by matching a small set of regular expressions against its title, abstract, and publication title. These suggestions are app-side fallbacks; the CSV is not modified.
 
 The corpus is imported into the frontend bundle, so changes to `corpus.csv` require a reload or rebuild.
+
+## Contributing
+
+Contributions are welcome. If you know of a useful reference to add, feel free to open an issue with a suggestion for a new reference. If you'd like to improve the explorer or the corpus, please open a pull request.
