@@ -95,12 +95,22 @@ function App() {
   const [search, setSearch] = useState('');
   const [tagSearch, setTagSearch] = useState('');
   const [typeFilter, setTypeFilter] = useState('All item types');
+  const [currentView, setCurrentView] = useState('explorer');
+  const [tagDirectorySearch, setTagDirectorySearch] = useState('');
   const taggedItems = useMemo(() => corpus.map((item) => ({ ...item, explorerTags: getTags(item) })), []);
   const tagCounts = useMemo(() => {
     const counts = new Map();
     taggedItems.forEach((item) => item.explorerTags.forEach((tag) => counts.set(tag, (counts.get(tag) ?? 0) + 1)));
     return [...counts.entries()].sort((first, second) => first[0].localeCompare(second[0]));
   }, [taggedItems]);
+  const allTags = useMemo(
+    () => [...tagCounts].sort(([first], [second]) => first.localeCompare(second)),
+    [tagCounts],
+  );
+  const filteredAllTags = useMemo(
+    () => allTags.filter(([tag]) => tag.toLocaleLowerCase().includes(tagDirectorySearch.trim().toLocaleLowerCase())),
+    [allTags, tagDirectorySearch],
+  );
   const itemTypes = useMemo(() => {
     const counts = new Map();
     taggedItems.forEach((item) => {
@@ -126,10 +136,65 @@ function App() {
 
   function selectTag(tag) {
     setActiveTag(tag);
+    setCurrentView('explorer');
     const firstMatch = tag === 'All references'
       ? taggedItems[0]
       : taggedItems.find((item) => item.explorerTags.includes(tag));
     setSelectedId(firstMatch?.id);
+  }
+
+  if (currentView === 'tags') {
+    return (
+      <main className="app-shell">
+        <header className="topbar">
+          <a className="wordmark" href="#top" aria-label="Fieldnotes home">
+            <span className="wordmark-mark" aria-hidden="true">F.</span>
+            <span>FIELDNOTES <small>AI CORPUS</small></span>
+          </a>
+          <div className="topbar-actions">
+            <button className="topbar-link" type="button" onClick={() => setCurrentView('explorer')}>Library</button>
+            <div className="topbar-meta"><span className="status-dot" /> LOCAL LIBRARY <span className="meta-divider">/</span> {corpus.length} ITEMS</div>
+          </div>
+        </header>
+
+        <section className="tag-directory-page" id="top">
+          <div className="tag-directory-header">
+            <div>
+              <div className="section-eyebrow">INDEX</div>
+              <h1>All tags</h1>
+            </div>
+            <button type="button" className="secondary-button" onClick={() => setCurrentView('explorer')}>Back to library</button>
+          </div>
+
+          <div className="tag-directory-toolbar">
+            <label className="tag-directory-search">
+              <span aria-hidden="true">⌕</span>
+              <input
+                value={tagDirectorySearch}
+                onChange={(event) => setTagDirectorySearch(event.target.value)}
+                placeholder="Search tags"
+                aria-label="Search tags"
+              />
+              {tagDirectorySearch && (
+                <button type="button" onClick={() => setTagDirectorySearch('')} aria-label="Clear tag search">×</button>
+              )}
+            </label>
+          </div>
+
+          <div className="tag-directory-grid">
+            {filteredAllTags.map(([tag, count]) => (
+              <button key={tag} type="button" className="tag-directory-card" onClick={() => selectTag(tag)}>
+                <span className="tag-directory-name">{tag}</span>
+                <span className="tag-directory-count">{count}</span>
+              </button>
+            ))}
+            {filteredAllTags.length === 0 && <div className="tag-directory-empty">No matching tags</div>}
+          </div>
+        </section>
+
+        <footer className="page-footer"><span>FIELDNOTES / 2026</span><span>READ WIDELY. CONNECT THE DOTS.</span></footer>
+      </main>
+    );
   }
 
   return (
@@ -139,12 +204,15 @@ function App() {
           <span className="wordmark-mark" aria-hidden="true">F.</span>
           <span>FIELDNOTES <small>AI CORPUS</small></span>
         </a>
-        <div className="topbar-meta"><span className="status-dot" /> LOCAL LIBRARY <span className="meta-divider">/</span> {corpus.length} ITEMS</div>
+        <div className="topbar-actions">
+          <button className="topbar-link" type="button" onClick={() => setCurrentView('tags')}>All tags</button>
+          <div className="topbar-meta"><span className="status-dot" /> LOCAL LIBRARY <span className="meta-divider">/</span> {corpus.length} ITEMS</div>
+        </div>
       </header>
 
       <section className="intro" id="top">
         <div className="intro-kicker">A READING MAP FOR ARTIFICIAL INTELLIGENCE</div>
-        <h1>Ideas, connected.</h1>
+        <h1>AI Readings</h1>
         <p>Browse the research and writing shaping how we build, use, and think about AI.</p>
       </section>
 
@@ -153,6 +221,9 @@ function App() {
           <div className="rail-heading"><span>TOPICS</span><span className="rail-count">{tagCounts.length.toString().padStart(2, '0')}</span></div>
           <button className={`tag-option ${activeTag === 'All references' ? 'is-active' : ''}`} onClick={() => selectTag('All references')}>
             <span className="tag-name">All references</span><span className="tag-count">{corpus.length}</span>
+          </button>
+          <button className="tag-option tag-directory-button" type="button" onClick={() => setCurrentView('tags')}>
+            <span className="tag-name">View all tags</span><span className="tag-count">A–Z</span>
           </button>
           <label className="topic-search">
             <span aria-hidden="true">⌕</span>
